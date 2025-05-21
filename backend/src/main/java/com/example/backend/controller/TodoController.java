@@ -23,6 +23,15 @@ public class TodoController {
         return ResponseEntity.ok(todoService.getAllTodos());
     }
 
+    // GET /todos/true - Fetch all todos with completed status
+    @GetMapping("/{status}")
+    public ResponseEntity<List<Todo>> getAllTodosAsStatus(@PathVariable Boolean status) {
+        if (status) {
+            return ResponseEntity.ok(todoService.getCompletedTodos());
+        }
+        return ResponseEntity.ok(todoService.getUnCompletedTodos());
+    }
+
     // POST /todos - Create a new todo
     @PostMapping
     public ResponseEntity<Todo> createTodo(@RequestBody Todo todo) {
