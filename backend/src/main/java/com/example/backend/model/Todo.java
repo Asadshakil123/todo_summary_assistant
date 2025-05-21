@@ -20,6 +20,10 @@ public class Todo extends Auditable {
     private String description;
     private boolean completed;
 
+    public String getDescription() {
+        return description;
+    }
+
     public boolean isCompleted() {
         return this.completed;
     }

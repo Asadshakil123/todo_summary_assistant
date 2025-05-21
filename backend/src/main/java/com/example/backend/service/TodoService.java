@@ -11,5 +11,9 @@ public interface TodoService {
 
     void deleteTodo(Long id);
 
+    List<Todo> getCompletedTodos();
+
+    List<Todo> getUnCompletedTodos();
+
     String summarizeAndSendToSlack();
 }

@@ -11,10 +11,16 @@ public class TodoServiceImpl implements TodoService {
 
     private final TodoRepository todoRepository;
     private final SlackService slackService;
+    private final OpenRouterService openRouterService;
 
-    public TodoServiceImpl(TodoRepository todoRepository, SlackService slackService) {
+    public TodoServiceImpl(
+            TodoRepository todoRepository,
+            SlackService slackService,
+            OpenRouterService openRouterService
+    ) {
         this.todoRepository = todoRepository;
         this.slackService = slackService;
+        this.openRouterService = openRouterService;
     }
 
     @Override
@@ -33,6 +39,16 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    public List<Todo> getCompletedTodos() {
+        return todoRepository.findByCompletedTrue();
+    }
+
+    @Override
+    public List<Todo> getUnCompletedTodos() {
+        return todoRepository.findByCompletedFalse();
+    }
+
+    @Override
     public String summarizeAndSendToSlack() {
         List<Todo> todos = todoRepository.findAll();
 
@@ -42,20 +58,19 @@ public class TodoServiceImpl implements TodoService {
             return emptyMessage;
         }
 
-        // Simple text summary (can replace with LLM later)
-        StringBuilder summary = new StringBuilder("*📝 Todo Summary:*\n");
-        for (Todo todo : todos) {
-            summary.append("- ")
-                    .append(todo.isCompleted() ? "✅ " : "🕒 ")
-                    .append(todo.getTitle())
-                    .append("\n");
-        }
+        // Prepare todos for LLM prompt
+        List<String> todoLines = todos.stream()
+                .filter(todo -> !todo.isCompleted())
+                .map(todo -> "- " + todo.getTitle() + (todo.getDescription() != null ? ": " + todo.getDescription() : ""))
+                .toList();
 
-        String summaryText = summary.toString();
+        // Use OpenRouter to summarize
+        String llmSummary = openRouterService.generateSummary(todoLines);
 
-        // Send to Slack
-        slackService.sendMessage(summaryText);
+        // Send summary to Slack
+        slackService.sendMessage(llmSummary);
 
-        return "Summary sent to Slack successfully!";
+        return "LLM summary sent to Slack!";
     }
+
 }
