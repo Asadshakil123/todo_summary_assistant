@@ -16,4 +16,6 @@ public interface TodoService {
     List<Todo> getUnCompletedTodos();
 
     String summarizeAndSendToSlack();
+
+    boolean updateTodo(Long id, Todo todo);
 }

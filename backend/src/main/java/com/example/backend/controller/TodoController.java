@@ -51,5 +51,14 @@ public class TodoController {
         String summary = todoService.summarizeAndSendToSlack();
         return ResponseEntity.ok(summary);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Todo> updateTodo(@PathVariable Long id, @RequestBody Todo todo) {
+        boolean flag = todoService.updateTodo(id, todo);
+        if (flag) {
+            return ResponseEntity.ok(todo);
+        }
+        return ResponseEntity.status(400).body(todo);
+    }
 }
 
