@@ -73,4 +73,15 @@ public class TodoServiceImpl implements TodoService {
         return "LLM summary sent to Slack!";
     }
 
+    @Override
+    public boolean updateTodo(Long id, Todo updatedTodo) {
+        return todoRepository.findById(id).map(existingTodo -> {
+            existingTodo.setTitle(updatedTodo.getTitle());
+            existingTodo.setDescription(updatedTodo.getDescription());
+            existingTodo.setCompleted(updatedTodo.isCompleted());
+            todoRepository.save(existingTodo);
+            return true;
+        }).orElse(false);
+    }
+
 }

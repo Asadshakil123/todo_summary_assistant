@@ -13,4 +13,5 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
 
     // Optional: also add the inverse if needed
     List<Todo> findByCompletedFalse();
+
 }

@@ -5,11 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
+
 @Entity(name = "todo")
 public class Todo extends Auditable {
     @Id
@@ -19,6 +16,10 @@ public class Todo extends Auditable {
     private String title;
     private String description;
     private boolean completed;
+
+    public Long getId() {
+        return id;
+    }
 
     public String getDescription() {
         return description;
@@ -30,6 +31,18 @@ public class Todo extends Auditable {
 
     public String getTitle() {
         return this.title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
 
