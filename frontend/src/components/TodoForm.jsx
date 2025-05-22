@@ -33,7 +33,7 @@ function TodoForm({ todoToEdit, onFinishEdit }) {
 							type="text"
 							id="inputTitle"
 							value={title}
-							onChange={(e) => setText(e.target.value)}
+							onChange={(e) => setTitle(e.target.value)}
 							placeholder="todo title..."
 							className="flex-grow p-2 mr-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" // Tailwind classes for input
 						/>
